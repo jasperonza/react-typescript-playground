@@ -1,6 +1,6 @@
 // ***Using INTERFACE as alias ***
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string
+  label?: string
 }
 
 // ***Using TYPE as alias***
@@ -10,6 +10,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = ({ label, ...props }: ButtonProps) => {
   return (
-    <button {...props}>{label}</button>
+    <button {...props}>{label || "asd"}</button>
   )
 }
