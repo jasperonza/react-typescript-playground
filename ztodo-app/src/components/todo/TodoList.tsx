@@ -10,39 +10,43 @@ export default function TodoList() {
 
   const { useTodoEffect, handleEdit, deleteTodo, completeTodo } = useTodo();
 
+  const allTodoTaskCompleted = todos.every((todo: any) => todo.isCompleted);
+
   useTodoEffect(todos);
 
   return (
     <>
 
+      <h3>Todo/s:</h3>
+      
+      {todos.length > 0 && allTodoTaskCompleted &&
+        <p>All todo task/s is/are completed</p>
+      }
+
       {todos.length > 0 ? todos.map((todo: any, index: number) => (
         <div key={todo.id}>
 
           {/* Show / hide todo/s list */}
-          {isTodoListActive && !todo.isCompleted ?
-            <>
-              <h3>Todos:</h3>
-              <ul>
-                <li key={todo.id}>
-                  <div>{todo.id}</div>
-                  <div>{todo.title}</div>
-                  <div>{todo.description}</div>
-                  {buttonActiveIndex === index ?
-                    null :
-                    <div>
-                      <AppButton type='button' onClick={() => handleEdit(index)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index}>Edit</AppButton>
-                    </div>
-                  }
+          {isTodoListActive && !todo.isCompleted &&
+            <ul>
+              <li key={todo.id}>
+                <div>{todo.id}</div>
+                <div>{todo.title}</div>
+                <div>{todo.description}</div>
+                {buttonActiveIndex === index ?
+                  null :
                   <div>
-                    <AppButton type='button' onClick={() => completeTodo(todo.id)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index}>Complete</AppButton>
+                    <AppButton type='button' onClick={() => handleEdit(index)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index}>Edit</AppButton>
                   </div>
-                  <div>
-                    <AppButton type='button' onClick={() => deleteTodo(todo.id)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index}>Delete</AppButton>
-                  </div>
-                </li>
-              </ul>
-            </>
-            : <p>All task/s are completed</p>
+                }
+                <div>
+                  <AppButton type='button' onClick={() => completeTodo(todo.id)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index}>Complete</AppButton>
+                </div>
+                <div>
+                  <AppButton type='button' onClick={() => deleteTodo(todo.id)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index}>Delete</AppButton>
+                </div>
+              </li>
+            </ul>
           }
 
           {/* Show / hide todo list update form */}
@@ -51,12 +55,13 @@ export default function TodoList() {
             : null
           }
 
-          <TodoCompletedTasks />
-          
         </div>
       )) :
         <p>Todo/s not found</p>
       }
+
+      <h3>Completed task/s:</h3>
+      <TodoCompletedTasks />
 
     </>
   )
