@@ -49,6 +49,21 @@ export const useTodo = () => {
     toast.success('Todo created');
   }
 
+  const completeTodo = (todoId: number) => {
+    const status = { isCompleted: true };
+
+    const todoIsComplete = todos.map((todo: any) => {
+      if (todo.id === todoId) {
+        return { ...todo, ...status };
+      } else {
+        return todo;
+      }
+    });
+
+    setTodos(todoIsComplete);
+    toast.success('Task completed');
+  }
+
   // Update todo
   const updateTodo = (e: React.FormEvent<HTMLFormElement>, id: number, todoUpdate: any) => {
     e.preventDefault();
@@ -93,5 +108,5 @@ export const useTodo = () => {
     setIsTodoListActive(false);
   }
 
-  return { initialTodoData, createTodo, updateTodo, deleteTodo, useTodoEffect, handleChange, handleEdit }
+  return { initialTodoData, createTodo, completeTodo, updateTodo, deleteTodo, useTodoEffect, handleChange, handleEdit }
 }
