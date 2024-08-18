@@ -109,5 +109,7 @@ export const useTodo = () => {
     setIsTodoListActive(false);
   }
 
-  return { initialTodoData, createTodo, completeTodo, updateTodo, deleteTodo, useTodoEffect, handleChange, handleEdit }
+  const allTodoTaskCompleted = todos.every((todo: any) => todo.isCompleted);
+
+  return { initialTodoData, createTodo, completeTodo, updateTodo, deleteTodo, useTodoEffect, handleChange, handleEdit, allTodoTaskCompleted }
 }

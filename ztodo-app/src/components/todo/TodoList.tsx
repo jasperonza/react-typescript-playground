@@ -8,9 +8,7 @@ export default function TodoList() {
 
   const { todos, buttonActiveIndex, isTodoListActive } = useTodoContext();
 
-  const { useTodoEffect, handleEdit, deleteTodo, completeTodo } = useTodo();
-
-  const allTodoTaskCompleted = todos.every((todo: any) => todo.isCompleted);
+  const { useTodoEffect, handleEdit, deleteTodo, completeTodo, allTodoTaskCompleted } = useTodo();
 
   useTodoEffect(todos);
 
@@ -18,7 +16,7 @@ export default function TodoList() {
     <>
 
       <h3>Todo/s:</h3>
-      
+
       {todos.length > 0 && allTodoTaskCompleted &&
         <p>All todo task/s is/are completed</p>
       }
@@ -62,7 +60,11 @@ export default function TodoList() {
 
       <h3>Completed task/s:</h3>
       <TodoCompletedTasks />
-
+      {noCompletedTasks ? (
+        <p>No todo task/s is/are completed</p>
+      ) : (
+        <TodoCompletedTasks />
+      )}
     </>
   )
 }
