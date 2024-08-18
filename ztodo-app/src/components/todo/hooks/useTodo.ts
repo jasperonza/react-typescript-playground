@@ -80,7 +80,7 @@ export const useTodo = () => {
     setTodos(updatedTodos);
     setButtonActiveIndex(null);
     setIsTodoListActive(true);
-    toast.success('Todo updated');
+    toast.info('Todo updated');
   }
 
   // Remove / delete todo
