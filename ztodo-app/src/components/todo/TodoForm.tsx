@@ -24,6 +24,11 @@ export default function TodoForm() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createTodo(newTodo);
+    setNewTodo({
+      title: '',
+      description: '',
+      isCompleted: false,
+    });
   }
 
   return (
@@ -33,11 +38,11 @@ export default function TodoForm() {
           <h3>Create new todo</h3>
           {/* Todo title */}
           <label htmlFor="todoId">Title</label>
-          <AppInput type='text' name='title' id='todoId' placeholder='Todo title' onChange={handleChange} />
+          <AppInput type='text' name='title' id='todoId' placeholder='Todo title' value={newTodo.title} onChange={handleChange} />
 
           {/* Todo description */}
           <label htmlFor="todoDescriptionId">Description</label>
-          <AppInput type='text' name='description' id='todoDescriptionId' placeholder='Todo description' onChange={handleChange} />
+          <AppInput type='text' name='description' id='todoDescriptionId' placeholder='Todo description' value={newTodo.description} onChange={handleChange} />
 
           {/* Todo button */}
           <AppButton>Create</AppButton>
