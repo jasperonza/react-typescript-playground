@@ -111,5 +111,9 @@ export const useTodo = () => {
 
   const allTodoTaskCompleted = todos.every((todo: any) => todo.isCompleted);
 
-  return { initialTodoData, createTodo, completeTodo, updateTodo, deleteTodo, useTodoEffect, handleChange, handleEdit, allTodoTaskCompleted }
+  const completedTasks = todos.filter((todo: any) => todo.isCompleted);
+
+  const noCompletedTasks = completedTasks.length === 0;
+
+  return { initialTodoData, createTodo, completeTodo, updateTodo, deleteTodo, useTodoEffect, handleChange, handleEdit, allTodoTaskCompleted, noCompletedTasks }
 }
