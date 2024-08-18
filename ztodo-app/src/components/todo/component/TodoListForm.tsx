@@ -14,27 +14,29 @@ export default function TodoListForm({ }: Props) {
 
   return (
     <>
-      {todos ? todos.map((todo: any, index: number) => (
+      {todos.length > 0 ? todos.map((todo: any, index: number) => (
         <div key={todo.id}>
-          <ul>
-            <li key={todo.id}>
-              <div>{todo.id}</div>
-              <div>
-                <AppInput defaultValue={todo.title} name='title' onChange={(e: InputChangeEvent) => handleChange(e)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index} />
-              </div>
-              <div>
-                <AppInput defaultValue={todo.description} name='description' onChange={(e: InputChangeEvent) => handleChange(e)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index} />
-              </div>
-              <div>
-                {buttonActiveIndex === index ?
-                  <form onSubmit={(e) => updateTodo(e, todo.id, todoUpdate)}>
-                    <AppButton type='submit'>Update</AppButton>
-                  </form>
-                  : null
-                }
-              </div>
-            </li>
-          </ul>
+          {!todo.isCompleted &&
+            <ul>
+              <li key={todo.id}>
+                <div>{todo.id}</div>
+                <div>
+                  <AppInput defaultValue={todo.title} name='title' onChange={(e: InputChangeEvent) => handleChange(e)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index} />
+                </div>
+                <div>
+                  <AppInput defaultValue={todo.description} name='description' onChange={(e: InputChangeEvent) => handleChange(e)} disabled={buttonActiveIndex !== null && buttonActiveIndex !== index} />
+                </div>
+                <div>
+                  {buttonActiveIndex === index ?
+                    <form onSubmit={(e) => updateTodo(e, todo.id, todoUpdate)}>
+                      <AppButton type='submit'>Update</AppButton>
+                    </form>
+                    : null
+                  }
+                </div>
+              </li>
+            </ul>
+          }
         </div>
       ))
         : null
