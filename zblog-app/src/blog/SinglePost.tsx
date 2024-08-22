@@ -3,6 +3,7 @@ import { usePostQuery } from './hooks/usePostQuery';
 import { ErrorState, Loading, NotFound } from '../components/utils/useQueryStates';
 import AppCard from '../components/app/AppCard';
 import AppLayout from '../components/layout/AppLayout';
+import Comments from './Comments';
 
 type Props = {}
 
@@ -70,6 +71,11 @@ export default function SinglePost({ }: Props) {
             </div>
           </AppCard>
         }
+
+        {/* Comments */}
+        <AppCard>
+          <Comments />
+        </AppCard>
       </AppLayout>
     </>
   )
