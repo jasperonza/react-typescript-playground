@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { usePost } from './hooks/usePost';
 import { usePostQuery } from './hooks/usePostQuery';
 import { ErrorState, Loading, NotFound } from '../components/utils/useQueryStates';
@@ -8,13 +7,12 @@ import AppLayout from '../components/layout/AppLayout';
 type Props = {}
 
 export default function SinglePost({ }: Props) {
-  // React router params
-  const { postId } = useParams();
+  // Render single post with different method(s)
 
   // ===============================================================
   // *** Method 1
   // *** Using custom hook with react hooks
-  // const [post] = usePost(postId);
+  // const [post] = usePost();
   // ===============================================================
 
   // ===============================================================
