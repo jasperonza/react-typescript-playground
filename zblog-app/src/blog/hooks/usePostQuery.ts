@@ -7,7 +7,7 @@ export const usePostQuery = () => {
 
   const query = useQuery({
     queryKey: ['post'],
-    queryFn: async () => fetchPost(postId)
+    queryFn: () => fetchPost(postId)
   });
 
   return {
