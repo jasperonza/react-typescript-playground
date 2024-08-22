@@ -7,6 +7,7 @@ import App from './App.tsx';
 import LoginPage from './components/pages/LoginPage.tsx';
 import HomePage from './components/pages/HomePage.tsx';
 import NotFoundPage from './components/pages/NotFoundPage.tsx';
+import SinglePost from './blog/SinglePost.tsx';
 import { ToastContainer } from 'react-toastify';
 import './index.css';
 
@@ -24,14 +25,19 @@ const router = createBrowserRouter([
     path: '/login',
     element: <LoginPage />
   },
+  // Single post route
+  {
+    path: '/post/:postId',
+    element: <SinglePost />
+  },
 ]);
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    
-    <ToastContainer /> 
+
+    <ToastContainer />
     <QueryClientProvider client={queryClient}>
       <UserContextProvider>
         <RouterProvider router={router} />
