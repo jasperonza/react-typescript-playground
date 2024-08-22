@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { initializePosts } from './hooks/usePosts';
 import { usePostsQuery } from './hooks/usePostsQuery';
 import { ErrorState, Loading, NotFound } from '../components/utils/useQueryStates';
@@ -39,6 +40,7 @@ export default function PostList({ }: Props) {
           <ul>
             <li>{post.title}</li>
             <li>{post.body}</li>
+            <li><Link to={`/post/${post.id}`}>View</Link></li>
           </ul>
         </AppCard>
       )}
