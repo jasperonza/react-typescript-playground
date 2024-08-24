@@ -1,20 +1,11 @@
-import { PropsWithChildren, ReactNode } from "react"
-import AppNav from "./AppNav";
+import Header1 from "./template/header/Header1";
+import Header2 from "./template/header/Header2";
+import TodoHeader from "./template/header/TodoHeader";
 
-type Props = {
-  children?: ReactNode;
-  props?: PropsWithChildren;
-}
-
-export default function AppHeader({ children, props}: Props) {
-
+export default function AppHeader() {
   return (
-    <header {...props}>
-      {children ? children :
-        <AppNav>
-          <div>This is default AppHeader AppNav</div>
-        </AppNav>
-      }
-    </header>
+    <>
+      <TodoHeader />
+    </>
   )
 }
