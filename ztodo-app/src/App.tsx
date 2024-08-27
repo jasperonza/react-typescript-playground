@@ -1,14 +1,11 @@
 import 'react-toastify/dist/ReactToastify.css';
-import LoginPage from "./components/pages/LoginPage";
-import HomePage from "./components/pages/HomePage";
+import { Outlet } from 'react-router-dom';
 
 function App() {
 
   return (
     <>
-      {/* <LoginPage /> */}
-      {/* <TodoPage /> */}
-      <HomePage />
+      <Outlet />
     </>
   )
 }
