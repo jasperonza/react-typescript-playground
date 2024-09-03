@@ -11,6 +11,7 @@ import ProtectedRoute from './components/middleware/ProtectedRoute.tsx';
 import NotFoundPage from './components/pages/NotFoundPage.tsx';
 import { ToastContainer } from 'react-toastify';
 import './index.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const router = createBrowserRouter([
   {
@@ -43,13 +44,17 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ToastContainer />
-    <UserContextProvider>
-      <TodoContextProvider>
-        <RouterProvider router={router} />
-      </TodoContextProvider>
-    </UserContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserContextProvider>
+        <TodoContextProvider>
+          <RouterProvider router={router} />
+        </TodoContextProvider>
+      </UserContextProvider>
+    </QueryClientProvider>
   </StrictMode>,
 )
