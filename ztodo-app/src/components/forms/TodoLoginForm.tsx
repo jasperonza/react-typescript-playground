@@ -36,7 +36,7 @@ export default function TodoLoginForm() {
     <>
       <Box sx={{ py: 12 }}>
         <Container>
-          <Paper elevation={2} sx={{ mx: 'auto', p: 4, width: 480 }}>
+          <Paper elevation={4} sx={{ mx: 'auto', p: { xs: 2, sm: 4 }, width: { xs: 'auto', sm: 480 } }}>
             <form onSubmit={handleSubmit}>
 
               <Typography variant={'h3'} sx={{ mb: 2 }}>Login</Typography>
@@ -86,6 +86,7 @@ export default function TodoLoginForm() {
                 <Button
                   type='submit'
                   variant='outlined'
+                  size='large'
                 >
                   Sign In
                 </Button>
