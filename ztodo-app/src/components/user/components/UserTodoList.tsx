@@ -1,6 +1,8 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { useTodoQuery } from '../../todo/hooks/useTodoQuery';
+import { deleteUserTodo } from '../../todo/api/deleteUserTodo';
+import { modifyUserTodo } from '../../todo/api/modifyUserTodo';
 import { Box, Typography, Paper, Divider, Stack, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, DialogContentText } from '@mui/material';
 
 export default function UserTodoList() {
@@ -41,25 +43,35 @@ export default function UserTodoList() {
 
   const [responseData, setResponseData] = useState<string[] | any>();
   const handleSubmit = async () => {
-    setToggleResponse(true);
 
-    const response = await fetch(`https://dummyjson.com/todos/${todoId}`, {
-      method: 'PUT', /* or PATCH */
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        completed: true,
-        todo: `${todo}`,
-      })
-    });
-
-    const data = await response.json();
+    const data = await modifyUserTodo(todoId, todo);
     setResponseData(data);
+    setToggleResponse(true);
   }
 
   const handleCloseResponse = () => {
     setToggleResponse(false);
     setTodo(undefined);
     setTodoId(undefined);
+  }
+
+  // Toggle remove / delete modal
+  const [toggleDeleteDialog, setToggleDeleteDialog] = useState(false);
+
+  const handleOpenDeleteDialog = (todoId: number) => {
+    setTodoId(todoId);
+    setToggleDeleteDialog(true);
+  }
+
+  const handleCloseDeleteDialog = () => {
+    setToggleDeleteDialog(false);
+    setTodoId(undefined);
+  }
+
+  const handleDeleteSubmit = async () => {
+    const data = await deleteUserTodo(todoId);
+    setResponseData(data);
+    setToggleResponse(true);
   }
 
   if (isLoading) {
@@ -97,7 +109,7 @@ export default function UserTodoList() {
 
                 <Divider orientation='vertical' variant='middle' flexItem />
 
-                <Button color='error'>Delete</Button>
+                <Button color='error' onClick={() => handleOpenDeleteDialog(userTodo.id)}>Delete</Button>
 
                 <Divider orientation='vertical' variant='middle' flexItem />
 
@@ -139,19 +151,59 @@ export default function UserTodoList() {
               </DialogActions>
             </Dialog>
 
+            {/* Delete dialog / modal */}
+            <Dialog
+              open={toggleDeleteDialog}
+              onClose={handleCloseDeleteDialog}
+              PaperProps={{
+                component: 'form',
+                onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  handleCloseDeleteDialog();
+                }
+              }}
+              fullWidth
+            >
+              <DialogTitle>Delete task</DialogTitle>
+              <DialogContent>
+                <Typography>Are you sure you want to delete the task?</Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+                <Button type='submit' onClick={handleDeleteSubmit}>Submit</Button>
+              </DialogActions>
+            </Dialog>
+
             {/* Server response */}
             < Dialog
               open={toggleResponse}
               onClose={handleCloseResponse}
+              fullWidth
             >
-              <DialogTitle id="alert-dialog-title">
-                Response from server
-              </DialogTitle>
+              <DialogTitle id="alert-dialog-title">Response from server</DialogTitle>
               <DialogContent>
                 {responseData &&
-                  <DialogContentText id="alert-dialog-description">
-                    Task updated: {responseData.todo}
-                  </DialogContentText>
+                  responseData.isDeleted && (
+                    <>
+                      <Typography variant='button'>Deleted task</Typography>
+
+                      <DialogContentText id="alert-dialog-description">
+                        Todo: {responseData.todo}
+                      </DialogContentText>
+
+                      <DialogContentText id="alert-dialog-description">
+                        Deleted: {responseData.isDeleted.toString().toUpperCase()}
+                      </DialogContentText>
+
+                    </>
+                  )
+                }
+
+                {responseData &&
+                  <>
+                    <Typography variant='button'>Updated task</Typography>
+                    <DialogContentText id="alert-dialog-description">Todo: {responseData && responseData.todo}</DialogContentText>
+                  </>
                 }
               </DialogContent>
               <DialogActions>
