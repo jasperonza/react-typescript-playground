@@ -6,7 +6,6 @@ export const modifyUserTodo = async (todoId: number | null | undefined, userTodo
       method: 'PUT', /* or PATCH */
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        completed: true,
         todo: userTodo
       })
     });
