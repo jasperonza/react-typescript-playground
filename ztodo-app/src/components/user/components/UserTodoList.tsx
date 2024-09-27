@@ -1,6 +1,7 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { useTodoQuery } from '../../todo/hooks/useTodoQuery';
+import { completeUserTodo } from '../../todo/api/completeUserTodo';
 import { deleteUserTodo } from '../../todo/api/deleteUserTodo';
 import { modifyUserTodo } from '../../todo/api/modifyUserTodo';
 import { Box, Typography, Paper, Divider, Stack, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, DialogContentText } from '@mui/material';
@@ -74,6 +75,25 @@ export default function UserTodoList() {
     setToggleResponse(true);
   }
 
+  // Toggle complete modal
+  const [toggleCompleteDialog, setToggleCompleteDialog] = useState(false);
+
+  const handleOpenCompleteDialog = (todoId: number) => {
+    setTodoId(todoId);
+    setToggleCompleteDialog(true);
+  }
+
+  const handleCloseCompleteDialog = () => {
+    setToggleCompleteDialog(false);
+    setTodoId(undefined);
+  }
+
+  const handleCompleteSubmit = async () => {
+    const data = await completeUserTodo(todoId);
+    setResponseData(data);
+    setToggleResponse(true);
+  }
+
   if (isLoading) {
     return <Typography>Loading...</Typography>
   }
@@ -113,7 +133,7 @@ export default function UserTodoList() {
 
                 <Divider orientation='vertical' variant='middle' flexItem />
 
-                <Button color='success'>Complete</Button>
+                <Button color='success' onClick={() => handleOpenCompleteDialog(userTodo.id)}>Complete</Button>
               </Stack>
             </Box>
 
@@ -174,6 +194,29 @@ export default function UserTodoList() {
               </DialogActions>
             </Dialog>
 
+            {/* Complete todo dialog / modal */}
+            <Dialog
+              open={toggleCompleteDialog}
+              onClose={handleCloseCompleteDialog}
+              PaperProps={{
+                component: 'form',
+                onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  handleCloseCompleteDialog();
+                }
+              }}
+              fullWidth
+            >
+              <DialogTitle>Complete task</DialogTitle>
+              <DialogContent>
+                <Typography>Are you sure you want to complete the task?</Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseCompleteDialog}>Cancel</Button>
+                <Button type='submit' onClick={handleCompleteSubmit}>Submit</Button>
+              </DialogActions>
+            </Dialog>
+
             {/* Server response */}
             < Dialog
               open={toggleResponse}
@@ -183,28 +226,37 @@ export default function UserTodoList() {
               <DialogTitle id="alert-dialog-title">Response from server</DialogTitle>
               <DialogContent>
                 {responseData &&
-                  responseData.isDeleted && (
-                    <>
-                      <Typography variant='button'>Deleted task</Typography>
+                  responseData.isDeleted ? (
+                  <>
+                    <Typography variant='button'>Deleted task</Typography>
 
-                      <DialogContentText id="alert-dialog-description">
-                        Todo: {responseData.todo}
-                      </DialogContentText>
+                    <DialogContentText id="alert-dialog-description">
+                      Todo: {responseData.todo}
+                    </DialogContentText>
 
-                      <DialogContentText id="alert-dialog-description">
-                        Deleted: {responseData.isDeleted.toString().toUpperCase()}
-                      </DialogContentText>
+                    <DialogContentText id="alert-dialog-description">
+                      Deleted: {responseData.isDeleted.toString().toUpperCase()}
+                    </DialogContentText>
 
-                    </>
-                  )
-                }
+                  </>
+                ) : responseData.completed ? (
+                  <>
+                    <Typography variant='button'>Completed task</Typography>
 
-                {responseData &&
+                    <DialogContentText id="alert-dialog-description">
+                      Todo: {responseData.todo}
+                    </DialogContentText>
+
+                    <DialogContentText id="alert-dialog-description">
+                      Completed: {responseData.completed.toString().toUpperCase()}
+                    </DialogContentText>
+                  </>
+                ) : (
                   <>
                     <Typography variant='button'>Updated task</Typography>
                     <DialogContentText id="alert-dialog-description">Todo: {responseData && responseData.todo}</DialogContentText>
                   </>
-                }
+                )}
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseResponse}>Close</Button>
