@@ -1,25 +1,18 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
 import AppLayout from "../layout/AppLayout";
-import AppButton from "../app/AppButton";
+import { Box } from "@mui/material";
+import UserTodoList from "../user/components/UserTodoList";
 
 export default function HomePage() {
-  const { user, setUser } = useContext(UserContext);
-
-  const navigate = useNavigate();
-  // console.log(user)
-
-  const handleLogout = () => {
-    setUser();
-    navigate('/');
-  }
 
   return (
     <>
       <AppLayout>
-        <div>Home page here</div>
-        <AppButton onClick={handleLogout}>log out</AppButton>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, p: 2 }}>
+          <Box width={{ sm: '50%', xs: 'auto' }} mx={'auto'}>
+            <UserTodoList />
+          </Box>
+        </Box>
+
       </AppLayout>
     </>
   )
