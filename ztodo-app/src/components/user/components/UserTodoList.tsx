@@ -225,8 +225,16 @@ export default function UserTodoList() {
             >
               <DialogTitle id="alert-dialog-title">Response from server</DialogTitle>
               <DialogContent>
-                {responseData &&
-                  responseData.isDeleted ? (
+                {/* Modify task response */}
+                {responseData && !responseData.isDeleted && !responseData.completed && (
+                  <>
+                    <Typography variant='button'>Updated task</Typography>
+                    <DialogContentText id="alert-dialog-description">Todo: {responseData && responseData.todo}</DialogContentText>
+                  </>
+                )}
+
+                {/* Delete task response */}
+                {responseData && responseData.isDeleted && (
                   <>
                     <Typography variant='button'>Deleted task</Typography>
 
@@ -239,7 +247,11 @@ export default function UserTodoList() {
                     </DialogContentText>
 
                   </>
-                ) : responseData.completed ? (
+                )
+                }
+
+                {/* Complete task response */}
+                {responseData && responseData.completed && !responseData.isDeleted && (
                   <>
                     <Typography variant='button'>Completed task</Typography>
 
@@ -250,11 +262,6 @@ export default function UserTodoList() {
                     <DialogContentText id="alert-dialog-description">
                       Completed: {responseData.completed.toString().toUpperCase()}
                     </DialogContentText>
-                  </>
-                ) : (
-                  <>
-                    <Typography variant='button'>Updated task</Typography>
-                    <DialogContentText id="alert-dialog-description">Todo: {responseData && responseData.todo}</DialogContentText>
                   </>
                 )}
               </DialogContent>
